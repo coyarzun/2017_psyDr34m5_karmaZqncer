@@ -1,0 +1,107 @@
+/////////////////////////////////////////////////////////////////////////////////////
+// ブードゥー教の子 ///////////////////////////////////////////////////////////////////
+// PSY.DR34M5:    ///////////////////////////////////////////////////////////////////
+// SCL20170114    ///////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+// 01.- Brownie        //////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+
+m.program(0, 46);
+
+m.control(9,0,1);
+m.program(9, 5);
+
+n.control(1,0,2);
+n.program(1, 3);
+
+TempoClock.default.tempo = 1.2;
+/////////////////////////////////////////////////////////////////////////////////////keyboard agudos
+(
+~kbHigh = Pbind(\type, \midi,\midicmd,\noteOn,\midiout, m,\chan,0,
+    \degree, Pbrown(2, 7, 4, inf),
+	\octave, 7,
+    //\cutoff, Pn(Pif(Ptime(inf) <= 2.0, Env(#[-1, 1, -1], #[2, 2], \sin)), inf),
+    \dur, Pbrown(1, 2, 5, inf),
+	\legato, 3.15
+).play;
+)
+~kbHigh.stop();
+/////////////////////////////////////////////////////////////////////////////////////keyboard bassline
+(
+~kbLow = Pbind(\type, \midi,\midicmd,\noteOn,\midiout, m,\chan,0,
+    \degree, Pbrown(2, 7, 4, inf),
+	\octave, 2,
+    //\cutoff, Pn(Pif(Ptime(inf) <= 2.0, Env(#[-1, 1, -1], #[2, 2], \sin)), inf),
+    \dur, Pbrown(1, 3, 2, inf),//0.125*4.5,
+	\legato, 1.5
+).play;
+)
+/////////////////////////////////////////////////////////////////////////////////////keyboard mid
+(
+~kbMid = Pbind(\type, \midi,\midicmd,\noteOn,\midiout, m,\chan,0,
+    \degree, Pbrown(2, 7, 4, inf),
+	\octave, 4,
+    \cutoff, Pn(Pif(Ptime(inf) <= 2.0, Env(#[-1, 1, -1], #[2, 2], \sin)), inf),
+    \dur, Pbrown(1, 2, 1, inf),
+	\legato, 0.5
+).play;
+)
+///////////////////////////////////////////////////////////////////////////////////// bassdrum
+(
+~bdPick = Pbind(
+	\type, \midi,
+    \midicmd, \noteOn,
+    \midiout, m,
+    \chan, 9,
+    \degree, Pwhite(6, 7, inf),
+    \octave, 2,
+    \dur, 0.25*Pbrown(1, 3, 3, inf),
+    \amp, 1.8
+).play;
+)
+~bdPick.stop;
+///////////////////////////////////////////////////////////////////////////////////// rasho
+
+(
+~rasho = Pbind(
+	\type, \midi,
+    \midicmd, \noteOn,
+    \midiout, m,
+    \chan, 9,
+    \degree, Pwhite(4, 4, inf),
+    \octave, 6,
+    \dur, 0.25*Pbrown(1, 3, 2, inf),
+    \amp, 0.8
+).play;
+)
+~rasho.stop;
+///////////////////////////////////////////////////////////////////////////////////// bass
+(
+~strongBass = Pbind(\type, \midi,\midicmd,\noteOn,\midiout, n,\chan,1,
+    \degree, Pbrown(1, 1, 2, inf),
+	\octave, 2,
+    \cutoff, Pn(Pif(Ptime(inf) <= 2.0, Env(#[-1, 1, -1], #[2, 2], \sin)), inf),
+    \dur, Pbrown(1, 2, 1, inf),
+	\legato, 0.5
+).play;
+)
+~strongBass.stop;
+/////////////////////////////////////////////////////////////////////////////////////
+~kbHigh.stop();
+
+~kbMid.stop();
+
+~kbLow.stop();
+
+
+~bdPick.stop();
+~rasho.stop();
+
+~strongBass.stop();
+/////////////////////////////////////////////////////////////////////////////////////
+//noteOffes
+(
+m.allNotesOff(0);
+n.allNotesOff(1);
+)
+/////////////////////////////////////////////////////////////////////////////////////
